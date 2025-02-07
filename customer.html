@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نموذج التذكرة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans Arabic', sans-serif;
+    }
+    /* إخفاء العناصر ذات الصلة بالنموذج أثناء الطباعة */
+    @media print {
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <!-- نموذج إدخال بيانات العميل والمبلغ -->
+    <div class="bg-white p-6 rounded-lg shadow-md no-print">
+      <h1 class="text-3xl font-bold text-blue-600 text-center mb-4">بيانات التذكرة</h1>
+      <form id="ticketForm">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2" for="customerName">اسم الزبون</label>
+          <input type="text" id="customerName" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="أدخل اسم الزبون" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2" for="paymentAmount">المبلغ للدفع</label>
+          <input type="number" id="paymentAmount" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="أدخل المبلغ" required>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg">عرض التذكرة</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- نموذج التذكرة الذي سيتم طباعته -->
+    <div id="ticketPreview" class="bg-white p-6 rounded-lg shadow-md mt-6 hidden">
+      <h2 class="text-2xl font-bold text-center mb-4">تذكرة العاب ريسوت</h2>
+      <div class="border-t border-b py-4">
+        <p class="text-xl"><strong>اسم الزبون:</strong> <span id="displayCustomerName"></span></p>
+        <p class="text-xl mt-2"><strong>المبلغ للدفع:</strong> <span id="displayPaymentAmount"></span> ريال</p>
+        <p class="text-xl mt-2"><strong>تاريخ التذكرة:</strong> <span id="displayTicketDate"></span></p>
+      </div>
+      <div class="text-center mt-6 no-print">
+        <button class="bg-green-600 text-white px-8 py-3 rounded-lg" onclick="window.print()">طباعة التذكرة</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // عند تقديم النموذج، نقوم بعرض التذكرة مع البيانات المدخلة
+    document.getElementById('ticketForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // الحصول على بيانات الزبون والمبلغ
+      var customerName = document.getElementById('customerName').value;
+      var paymentAmount = document.getElementById('paymentAmount').value;
+
+      // عرض البيانات في التذكرة
+      document.getElementById('displayCustomerName').textContent = customerName;
+      document.getElementById('displayPaymentAmount').textContent = paymentAmount;
+      
+      // تعيين تاريخ إصدار التذكرة إلى التاريخ والوقت الحالي
+      var now = new Date();
+      document.getElementById('displayTicketDate').textContent = now.toLocaleString("ar-SA");
+
+      // إظهار نموذج التذكرة
+      document.getElementById('ticketPreview').classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
